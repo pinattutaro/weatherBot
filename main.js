@@ -50,7 +50,7 @@ async function getTodayWeatherForecast() {
                 const time = dt.toTimeString().slice(0, 5); // "HH:MM"
                 const weatherDesc = item.weather[0].description;
                 const temp = item.main.temp;
-                reply += `${time}：${weatherDesc}、${temp}℃\n`;
+                reply += `  ${time}：${weatherDesc}、${temp}℃\n`;
             });
             return reply;
         } else {
