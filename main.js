@@ -36,6 +36,7 @@ async function getTodayWeatherForecast() {
         if (data.list && data.list.length > 0) {
             const nowJST = new Date(Date.now() + 9 * 60 * 60 * 1000);
             const today = nowJST.toISOString().slice(0, 10);
+            // console.log(today);
             const todayForecasts = data.list.filter(item => {
                 const dt = new Date(item.dt_txt + 'Z');
                 return dt.toISOString().slice(0, 10) === today;
@@ -43,16 +44,13 @@ async function getTodayWeatherForecast() {
             if (todayForecasts.length === 0) {
                 return "本日の天気予報が見つかりませんでした。";
             }
-            // 最大のdescription長を取得
-            const maxDescLen = Math.max(...todayForecasts.map(item => item.weather[0].description.length));
             let reply = `【${city}の本日の天気予報】\n`;
             todayForecasts.forEach(item => {
                 const dt = new Date(item.dt_txt);
-                const time = dt.toTimeString().slice(0, 5).padEnd(5); // "HH:MM "
-                const weatherDesc = item.weather[0].description.padStart(maxDescLen);
-                const temp = `${item.main.temp}℃`.padStart(6);
-                const humidity = `${item.main.humidity}%`.padStart(4);
-                reply += `${time} : ${weatherDesc}, ${temp}, ${humidity}\n`;
+                const time = dt.toTimeString().slice(0, 5); // "HH:MM"
+                const weatherDesc = item.weather[0].description;
+                const temp = item.main.temp;
+                reply += `${time}：${weatherDesc}、${temp}℃\n`;
             });
             return reply;
         } else {
@@ -68,8 +66,7 @@ async function getCurrentWeather() {
         const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&lang=ja&units=metric`);
         const weatherDesc = res.data.weather[0].description;
         const temp = res.data.main.temp;
-        const humidity = res.data.main.humidity;
-        return `【現在の天気】${weatherDesc}, ${temp}℃, 湿度${humidity}%\n`;
+        return `【現在の天気】${weatherDesc}、${temp}℃\n`;
     } catch (e) {
         return "現在の天気を取得できませんでした。\n";
     }
