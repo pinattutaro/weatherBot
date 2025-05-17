@@ -61,6 +61,17 @@ async function getTodayWeatherForecast() {
     }
 }
 
+async function getCurrentWeather() {
+    try {
+        const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&lang=ja&units=metric`);
+        const weatherDesc = res.data.weather[0].description;
+        const temp = res.data.main.temp;
+        return `【現在の天気】${weatherDesc}、${temp}℃\n`;
+    } catch (e) {
+        return "現在の天気を取得できませんでした。\n";
+    }
+}
+
 async function getDelay() {
     try {
         const response = await axios.get(trainUrl);
@@ -180,7 +191,8 @@ client.on('messageCreate', async message => {
 			break;
         case "!weather":
             const forecast = await getTodayWeatherForecast();
-            message.channel.send(forecast);
+            const currentWeather = await getCurrentWeather();
+            message.channel.send(currentWeather + forecast);
             break;
         case "!train":
             const delayInfo = await getDelay();
@@ -263,7 +275,8 @@ client.on('interactionCreate', async interaction => {
             break;
         case "weather":
             const forecast = await getTodayWeatherForecast();
-            await interaction.reply(forecast);
+            const currentWeather = await getCurrentWeather();
+            await interaction.reply(currentWeather + forecast);
             break;
         case "train":
             const delayInfo = await getDelay();
