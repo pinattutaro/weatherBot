@@ -9,7 +9,7 @@ const commands = [
     new SlashCommandBuilder().setName('roulette').setDescription('ルーレットを回します'),
     new SlashCommandBuilder().setName('nakasai').setDescription('中才チャンス！！'),
     new SlashCommandBuilder().setName('doi').setDescription('ドイドイスー！！'),
-    new SlashCommandBuilder().setName('hayakawa').setDescription('ドイドイスー！！')
+    new SlashCommandBuilder().setName('hayakawa').setDescription('ズン！ズンズンズンドコ₍₍(ง˘ω˘)ว⁾⁾')
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);

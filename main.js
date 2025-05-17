@@ -214,14 +214,14 @@ client.on('messageCreate', async message => {
             break;
         
         case "!roulette":
-            const list = ["smile", "smile_cat", "smiley"];
+            const list = [":smile:", ":smile_cat:", ":smiley:"];
             var res = "";
             var sent = await message.channel.send("ルーレットを回しています...");
             var count = 0;
             var interval = setInterval(() => {
                 count ++;
                 const ram = Math.floor(Math.random() * list.length);
-                res += `:${list[ram]}:`;
+                res += `${list[ram]}`;
                 sent.edit(res);
                 if (count == 3) clearInterval(interval);
             }, 100);
@@ -255,6 +255,20 @@ client.on('messageCreate', async message => {
                 if (count == 3) clearInterval(interval);
             }, 100);
             break;
+
+        case "!hayakawa":
+            const hayakawa = ["<:h0:1372422709581185075>", "<:h1:1372422282445590658>", "<:h2:1372422246341021716>"];
+            var res = "";
+            var sent = await message.channel.send("KI!YO!SHI!!");
+            var count = 0;
+            var interval = setInterval(() => {
+                count ++;
+                const ram = Math.floor(Math.random() * hayakawa.length);
+                res += hayakawa[ram] + " ";
+                sent.edit(res);
+                if (count == 3) clearInterval(interval);
+            }, 100);
+            break;            
 
 		default: console.log("default case");
     }
@@ -294,14 +308,14 @@ client.on('interactionCreate', async interaction => {
             else interaction.reply("現在、遅延情報はありません。");
             break;
         case "roulette":
-            const list = ["smile", "smile_cat", "smiley"];
+            const list = [":smile:", ":smile_cat:", ":smiley:"];
             var res = "";
             await interaction.reply("ルーレットを回しています...");
             var count = 0;
             var spin = async () => {
                 if (count < 3) {
                     const ram = Math.floor(Math.random() * list.length);
-                    res += `:${list[ram]}:`;
+                    res += `${list[ram]}`;
                     await interaction.editReply(res);
                     count++;
                     setTimeout(spin, 100);
@@ -335,6 +349,22 @@ client.on('interactionCreate', async interaction => {
                     if (count < 3) {
                         const ram = Math.floor(Math.random() * doi.length);
                         res += `${doi[ram]} `;
+                        await interaction.editReply(res);
+                        count++;
+                        setTimeout(spin, 100);
+                    }
+                };
+                spin();
+                break;
+            case "hayakawa":
+                const hayakawa = ["<:h0:1372422709581185075>", "<:h1:1372422282445590658>", "<:h2:1372422246341021716>"];
+                var res = "";
+                await interaction.reply("KI!YO!SHI!!");
+                var count = 0;
+                var spin = async () => {
+                    if (count < 3) {
+                        const ram = Math.floor(Math.random() * hayakawa.length);
+                        res += `${hayakawa[ram]} `;
                         await interaction.editReply(res);
                         count++;
                         setTimeout(spin, 100);
