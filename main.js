@@ -44,13 +44,13 @@ async function getTodayWeatherForecast() {
             if (todayForecasts.length === 0) {
                 return "本日の天気予報が見つかりませんでした。";
             }
-            let reply = `【${city}の本日の天気予報】\n`;
+            let reply = `【${city}の本日の天気予報】  `;
             todayForecasts.forEach(item => {
                 const dt = new Date(item.dt_txt);
                 const time = dt.toTimeString().slice(0, 5); // "HH:MM"
                 const weatherDesc = item.weather[0].description;
                 const temp = item.main.temp;
-                reply += `${time}：${weatherDesc}、${temp}℃\n`;
+                reply += `- ${time}：${weatherDesc}、${temp}℃\n`;
             });
             return reply;
         } else {
