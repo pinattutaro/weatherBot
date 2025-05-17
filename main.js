@@ -36,6 +36,7 @@ async function getTodayWeatherForecast() {
         if (data.list && data.list.length > 0) {
             const nowJST = new Date(Date.now() + 9 * 60 * 60 * 1000);
             const today = nowJST.toISOString().slice(0, 10);
+            // console.log(today);
             const todayForecasts = data.list.filter(item => {
                 const dt = new Date(item.dt_txt + 'Z');
                 return dt.toISOString().slice(0, 10) === today;
@@ -46,11 +47,11 @@ async function getTodayWeatherForecast() {
             let reply = `【${city}の本日の天気予報】\n`;
             todayForecasts.forEach(item => {
                 const dt = new Date(item.dt_txt);
-                const time = dt.toTimeString().slice(0, 5); // "HH:MM"
-                const weatherDesc = item.weather[0].description;
-                const temp = item.main.temp;
-                const humidity = item.main.humidity; // 湿度を追加
-                reply += `  ${time}：${weatherDesc}、${temp}℃、${humidity}%\n`;
+                const time = dt.toTimeString().slice(0, 5).padEnd(5); // "HH:MM "
+                const weatherDesc = item.weather[0].description.padEnd(10);
+                const temp = `${item.main.temp}`.padEnd(5);
+                const humidity = `${item.main.humidity}`.padEnd(3);
+                reply += `${time} : ${weatherDesc}, ${temp}℃, ${humidity}%\n`;
             });
             return reply;
         } else {
@@ -66,8 +67,8 @@ async function getCurrentWeather() {
         const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&lang=ja&units=metric`);
         const weatherDesc = res.data.weather[0].description;
         const temp = res.data.main.temp;
-        const humidity = res.data.main.humidity; // 湿度を追加
-        return `【現在の天気】${weatherDesc}、${temp}℃、${humidity}%\n`;
+        const humidity = res.data.main.humidity;
+        return `【現在の天気】${weatherDesc}, ${temp}℃, 湿度${humidity}%\n`;
     } catch (e) {
         return "現在の天気を取得できませんでした。\n";
     }
