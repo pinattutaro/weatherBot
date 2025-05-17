@@ -44,11 +44,13 @@ async function getTodayWeatherForecast() {
             if (todayForecasts.length === 0) {
                 return "本日の天気予報が見つかりませんでした。";
             }
+            // 天気説明の最大長を取得
+            const maxWeatherLength = Math.max(...todayForecasts.map(item => item.weather[0].description.length));
             let reply = `【${city}の本日の天気予報】\n`;
             todayForecasts.forEach(item => {
                 const dt = new Date(item.dt_txt);
                 const time = dt.toTimeString().slice(0, 5).padEnd(5); // "HH:MM "
-                const weatherDesc = item.weather[0].description.padEnd(10);
+                const weatherDesc = item.weather[0].description.padEnd(maxWeatherLength);
                 const temp = `${item.main.temp}`.padEnd(5);
                 const humidity = `${item.main.humidity}`.padEnd(3);
                 reply += `${time} : ${weatherDesc}, ${temp}℃, ${humidity}%\n`;
